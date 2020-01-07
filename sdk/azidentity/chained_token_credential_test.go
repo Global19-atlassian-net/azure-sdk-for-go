@@ -24,7 +24,10 @@ func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not find appropriate environment credentials")
 	}
-	cred := NewChainedTokenCredential(secCred, envCred)
+	cred, err := NewChainedTokenCredential(secCred, envCred)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	if cred != nil {
 		if len(cred.sources) != 2 {
 			t.Fatalf("Expected 2 sources in the chained token credential, instead found %d", len(cred.sources))
@@ -47,7 +50,10 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create environment credential: %v", err)
 	}
-	cred := NewChainedTokenCredential(secCred, envCred)
+	cred, err := NewChainedTokenCredential(secCred, envCred)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to get a token but expected none")
@@ -67,8 +73,11 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	testURL := srv.URL()
 	secCred := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &testURL})
 	msiCred := NewManagedIdentityCredential("", nil)
-	cred := NewChainedTokenCredential(msiCred, secCred)
-	_, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	cred, err := NewChainedTokenCredential(msiCred, secCred)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
@@ -87,7 +96,10 @@ func TestChainedTokenCredential_GetTokenFailCredentialUnavailable(t *testing.T) 
 		t.Fatalf("Failed to reset environment variable MSI_ENDPOINT")
 	}
 	msiCred := NewManagedIdentityCredential("", nil)
-	cred := NewChainedTokenCredential(msiCred)
+	cred, err := NewChainedTokenCredential(msiCred)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
@@ -119,7 +131,10 @@ func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srvURL := srv.URL()
 	cred := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
-	chainedCred := NewChainedTokenCredential(cred)
+	chainedCred, err := NewChainedTokenCredential(cred)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	pipeline := azcore.NewPipeline(
 		srv,
 		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
