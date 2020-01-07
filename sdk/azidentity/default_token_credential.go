@@ -44,5 +44,5 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 	if len(creds) == 0 {
 		return nil, &CredentialUnavailableError{CredentialType: "Default Token Credential", Message: errMsg}
 	}
-	return NewChainedTokenCredential(creds...), nil
+	return NewChainedTokenCredential(creds...)
 }
