@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -41,8 +42,15 @@ type ManagedIdentityCredential struct {
 // clientID: The client id to authenticate for a user assigned managed identity.  More information on user assigned managed identities cam be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm
 // options: Options that allow to configure the management of the requests sent to the Azure Active Directory service.
-func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) *ManagedIdentityCredential {
-	return &ManagedIdentityCredential{clientID: clientID, client: newManagedIdentityClient(options)}
+func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
+	client := newManagedIdentityClient(options)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Duration(500)*time.Millisecond)
+	defer cancelFunc()
+	_, err := client.getMSIType(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return &ManagedIdentityCredential{clientID: clientID, client: client}, nil
 }
 
 // GetToken obtains an AccessToken from the Managed Identity service if available.
