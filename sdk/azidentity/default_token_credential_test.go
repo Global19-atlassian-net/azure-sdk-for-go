@@ -4,6 +4,7 @@
 package azidentity
 
 import (
+	"context"
 	"errors"
 	"os"
 	"testing"
@@ -71,13 +72,19 @@ func TestDefaultTokenCredential_NilOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Did not expect to receive an error in creating the credential")
 	}
-	if len(os.Getenv("MSI_ENDPOINT")) > 0 {
+	c := newManagedIdentityClient(nil)
+	// if the test is running in a MSI environment then the length of sources would be two since it will include environmnet credential and managed identity credential
+	if msiType, err := c.getMSIType(context.Background()); msiType == msiTypeIMDS || msiType == msiTypeCloudShell || msiType == msiTypeAppService {
 		if len(cred.sources) != 2 {
 			t.Fatalf("Length of ChainedTokenCredential sources for DefaultTokenCredential. Expected: 2, Received: %d", len(cred.sources))
 		}
-	} else {
+		//if a credential unavailable error is received or msiType is unknown then only the environment credential will be added
+	} else if unavailableErr := (*CredentialUnavailableError)(nil); errors.As(err, &unavailableErr) || msiType == msiTypeUnknown {
 		if len(cred.sources) != 1 {
 			t.Fatalf("Length of ChainedTokenCredential sources for DefaultTokenCredential. Expected: 1, Received: %d", len(cred.sources))
 		}
+		// if there is some other unexpected error then we fail here
+	} else if err != nil {
+		t.Fatalf("Received an error when trying to determine MSI type: %v", err)
 	}
 }
