@@ -416,6 +416,27 @@ func PossibleFileHashAlgorithmValues() []FileHashAlgorithm {
 	return []FileHashAlgorithm{MD5, SHA1, SHA256, SHA256AC, Unknown}
 }
 
+// IncidentSeverity enumerates the values for incident severity.
+type IncidentSeverity string
+
+const (
+	// IncidentSeverityCritical Critical severity
+	IncidentSeverityCritical IncidentSeverity = "Critical"
+	// IncidentSeverityHigh High severity
+	IncidentSeverityHigh IncidentSeverity = "High"
+	// IncidentSeverityInformational Informational severity
+	IncidentSeverityInformational IncidentSeverity = "Informational"
+	// IncidentSeverityLow Low severity
+	IncidentSeverityLow IncidentSeverity = "Low"
+	// IncidentSeverityMedium Medium severity
+	IncidentSeverityMedium IncidentSeverity = "Medium"
+)
+
+// PossibleIncidentSeverityValues returns an array of possible values for the IncidentSeverity const type.
+func PossibleIncidentSeverityValues() []IncidentSeverity {
+	return []IncidentSeverity{IncidentSeverityCritical, IncidentSeverityHigh, IncidentSeverityInformational, IncidentSeverityLow, IncidentSeverityMedium}
+}
+
 // KillChainIntent enumerates the values for kill chain intent.
 type KillChainIntent string
 
@@ -661,13 +682,15 @@ const (
 	AzureAdvancedThreatProtection MicrosoftSecurityProductName = "Azure Advanced Threat Protection"
 	// AzureSecurityCenter ...
 	AzureSecurityCenter MicrosoftSecurityProductName = "Azure Security Center"
+	// AzureSecurityCenterforIoT ...
+	AzureSecurityCenterforIoT MicrosoftSecurityProductName = "Azure Security Center for IoT"
 	// MicrosoftCloudAppSecurity ...
 	MicrosoftCloudAppSecurity MicrosoftSecurityProductName = "Microsoft Cloud App Security"
 )
 
 // PossibleMicrosoftSecurityProductNameValues returns an array of possible values for the MicrosoftSecurityProductName const type.
 func PossibleMicrosoftSecurityProductNameValues() []MicrosoftSecurityProductName {
-	return []MicrosoftSecurityProductName{AzureActiveDirectoryIdentityProtection, AzureAdvancedThreatProtection, AzureSecurityCenter, MicrosoftCloudAppSecurity}
+	return []MicrosoftSecurityProductName{AzureActiveDirectoryIdentityProtection, AzureAdvancedThreatProtection, AzureSecurityCenter, AzureSecurityCenterforIoT, MicrosoftCloudAppSecurity}
 }
 
 // OSFamily enumerates the values for os family.
@@ -3207,6 +3230,8 @@ type BookmarkProperties struct {
 	Updated *date.Time `json:"updated,omitempty"`
 	// UpdatedBy - Describes a user that updated the bookmark
 	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
+	// IncidentInfo - Describes an incident that relates to bookmark
+	IncidentInfo *IncidentInfo `json:"incidentInfo,omitempty"`
 }
 
 // BookmarkRelation represents a bookmark relation
@@ -6807,6 +6832,18 @@ func (hep HostEntityProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// IncidentInfo describes related incident information for the bookmark
+type IncidentInfo struct {
+	// IncidentID - Incident Id
+	IncidentID *string `json:"incidentId,omitempty"`
+	// Severity - The severity of the incident. Possible values include: 'IncidentSeverityCritical', 'IncidentSeverityHigh', 'IncidentSeverityMedium', 'IncidentSeverityLow', 'IncidentSeverityInformational'
+	Severity IncidentSeverity `json:"severity,omitempty"`
+	// Title - The title of the incident
+	Title *string `json:"title,omitempty"`
+	// RelationName - Relation Name
+	RelationName *string `json:"relationName,omitempty"`
+}
+
 // IPEntity represents an ip entity.
 type IPEntity struct {
 	// IPEntityProperties - Ip entity properties
@@ -7661,7 +7698,7 @@ func (msicar *MicrosoftSecurityIncidentCreationAlertRule) UnmarshalJSON(body []b
 type MicrosoftSecurityIncidentCreationAlertRuleCommonProperties struct {
 	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
 	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
-	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection'
+	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection', 'AzureSecurityCenterforIoT'
 	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 	// SeveritiesFilter - the alerts' severities on which the cases will be generated
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
@@ -7684,7 +7721,7 @@ type MicrosoftSecurityIncidentCreationAlertRuleProperties struct {
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
 	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
 	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
-	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection'
+	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection', 'AzureSecurityCenterforIoT'
 	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 	// SeveritiesFilter - the alerts' severities on which the cases will be generated
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`
@@ -7822,7 +7859,7 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
 	// DisplayNamesFilter - the alerts' displayNames on which the cases will be generated
 	DisplayNamesFilter *[]string `json:"displayNamesFilter,omitempty"`
-	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection'
+	// ProductFilter - The alerts' productName on which the cases will be generated. Possible values include: 'MicrosoftCloudAppSecurity', 'AzureSecurityCenter', 'AzureAdvancedThreatProtection', 'AzureActiveDirectoryIdentityProtection', 'AzureSecurityCenterforIoT'
 	ProductFilter MicrosoftSecurityProductName `json:"productFilter,omitempty"`
 	// SeveritiesFilter - the alerts' severities on which the cases will be generated
 	SeveritiesFilter *[]AlertSeverity `json:"severitiesFilter,omitempty"`

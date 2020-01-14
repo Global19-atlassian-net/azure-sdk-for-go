@@ -118,16 +118,11 @@ func (c *managedIdentityClient) sendAuthRequest(ctx context.Context, msiType msi
 		return nil, err
 	}
 
-	// This should never happen under normal conditions
-	if resp == nil {
-		return nil, &AuthenticationFailedError{msg: "Something unexpected happened with the request and received a nil response"}
-	}
-
 	if resp.HasStatusCode(successStatusCodes[:]...) {
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAuthenticationResponseError(resp)}
+	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
 }
 
 func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore.AccessToken, error) {

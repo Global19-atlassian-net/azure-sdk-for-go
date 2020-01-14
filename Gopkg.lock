@@ -2,12 +2,14 @@
 
 
 [[projects]]
-  digest = "1:78df7dcd6d2a3e38b9fc52a47129135bdfaf1f89e8dd07001968455459666b11"
+  digest = "1:2e9f9f3381b65a6f99438e30ce398cbc13eb224187950158321ad9e560261f40"
   name = "github.com/Azure/go-autorest"
   packages = [
     "autorest",
     "autorest/adal",
     "autorest/azure",
+    "autorest/azure/auth",
+    "autorest/azure/cli",
     "autorest/date",
     "autorest/to",
     "autorest/validation",
@@ -15,16 +17,16 @@
     "tracing",
   ]
   pruneopts = "UT"
-  revision = "69b4126ece6b5257e2f9b0017007d2334153655f"
-  version = "v13.0.1"
+  revision = "21d4b01533b1005be0d020da67a6d3f8ebdf0141"
+  version = "v13.3.1"
 
 [[projects]]
-  digest = "1:d37f34e1e231ee4b8657d1b6153e2696b1d7341850f648f5d78151d3bc1f677b"
+  digest = "1:f313598719f69ec4edbcd75b0f2ef1c8ed9e00f6ff3d7583ac3966db2d70d326"
   name = "github.com/Masterminds/semver"
   packages = ["."]
   pruneopts = "UT"
-  revision = "fe7c21038085e01e67044ec1efe3afb1eaa59f75"
-  version = "v3.0.1"
+  revision = "910aa146bd66780c2815d652b92a7fc5331e533c"
+  version = "v3.0.3"
 
 [[projects]]
   digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
@@ -35,15 +37,37 @@
   version = "v3.2.0"
 
 [[projects]]
+  digest = "1:cf0d2e435fd4ce45b789e93ef24b5f08e86be0e9807a16beb3694e2d8c9af965"
+  name = "github.com/dimchansky/utfbom"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "d2133a1ce379ef6fa992b0514a77146c60db9d1c"
+  version = "v1.1.0"
+
+[[projects]]
   branch = "master"
-  digest = "1:052aa482c25b2d76f432c16c4b404a6a3cb9cc205a95818c7680fcec501a43b7"
+  digest = "1:463a37f152816d49cd4302edaf1f72944c3edade65ffd8b2ea25883755afa156"
   name = "github.com/dnaeon/go-vcr"
   packages = [
     "cassette",
     "recorder",
   ]
   pruneopts = "UT"
-  revision = "ac8906116758e03208f043a52754f16f2982f26d"
+  revision = "9384691f0462689770c3e930cd8aff05c7075a5b"
+
+[[projects]]
+  branch = "master"
+  digest = "1:78102ee4d536347316bc42e818340cc50902e45dbd7fdd524c5a1fc0cb07b588"
+  name = "github.com/globalsign/mgo"
+  packages = [
+    ".",
+    "bson",
+    "internal/json",
+    "internal/sasl",
+    "internal/scram",
+  ]
+  pruneopts = "UT"
+  revision = "eeefdecb41b842af6dc652aaea4026e8403e62df"
 
 [[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
@@ -68,6 +92,14 @@
   pruneopts = "UT"
   revision = "e2ffdb16a802fe2bb95e2e35ff34f0e53aeef34f"
   version = "v0.1.0"
+
+[[projects]]
+  digest = "1:5d231480e1c64a726869bc4142d270184c419749d34f167646baa21008eb0a79"
+  name = "github.com/mitchellh/go-homedir"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "af06845cf3004701891bf4fdb884bfe4920b3727"
+  version = "v1.1.0"
 
 [[projects]]
   digest = "1:cf31692c14422fa27c83a05292eb5cbe0fb2775972e8f1f8446a71549bd8980b"
@@ -111,7 +143,18 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:18c7b936326b4919be6de0a20be857fdd3112036cdb3febfa9a5b332a4f54e27"
+  digest = "1:f604f5e2ee721b6757d962dfe7bab4f28aae50c456e39cfb2f3819762a44a6ae"
+  name = "golang.org/x/crypto"
+  packages = [
+    "pkcs12",
+    "pkcs12/internal/rc2",
+  ]
+  pruneopts = "UT"
+  revision = "becbf705a91575484002d598f87d74f0002801e7"
+
+[[projects]]
+  branch = "master"
+  digest = "1:81034a933b8e243f6c700951903f436029c1c1b53b0d694a9e8626cdeb835b00"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -128,7 +171,7 @@
     "internal/semver",
   ]
   pruneopts = "UT"
-  revision = "e461004dd03ddc1b89596568ce4119c0e8152ce6"
+  revision = "3721262b3e7c542ed1607f063180bccdb22c2d02"
 
 [[projects]]
   branch = "v1"
@@ -139,19 +182,21 @@
   revision = "41f04d3bba152ddec2103e299fed053415705330"
 
 [[projects]]
-  digest = "1:4d2e5a73dc1500038e504a8d78b986630e3626dc027bc030ba5c75da257cdb96"
+  digest = "1:b75b3deb2bce8bc079e16bb2aecfe01eb80098f5650f9e93e5643ca8b7b73737"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   pruneopts = "UT"
-  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
-  version = "v2.2.2"
+  revision = "1f64d6156d11335c3f22d9330b0ad14fc1e789ce"
+  version = "v2.2.7"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
     "github.com/Azure/go-autorest/autorest",
+    "github.com/Azure/go-autorest/autorest/adal",
     "github.com/Azure/go-autorest/autorest/azure",
+    "github.com/Azure/go-autorest/autorest/azure/auth",
     "github.com/Azure/go-autorest/autorest/date",
     "github.com/Azure/go-autorest/autorest/to",
     "github.com/Azure/go-autorest/autorest/validation",
@@ -159,10 +204,12 @@
     "github.com/Masterminds/semver",
     "github.com/dnaeon/go-vcr/cassette",
     "github.com/dnaeon/go-vcr/recorder",
+    "github.com/globalsign/mgo",
     "github.com/pkg/errors",
     "github.com/satori/go.uuid",
     "github.com/shopspring/decimal",
     "github.com/spf13/cobra",
+    "golang.org/x/crypto/pkcs12",
     "golang.org/x/tools/imports",
     "gopkg.in/check.v1",
   ]

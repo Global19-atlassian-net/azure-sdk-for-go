@@ -38,12 +38,7 @@ func NewDefaultTokenCredential(options *DefaultTokenCredentialOptions) (*Chained
 	}
 
 	if !options.ExcludeMSICredential {
-		msiCred, err := NewManagedIdentityCredential("", nil)
-		if err == nil {
-			creds = append(creds, msiCred)
-		} else {
-			errMsg += err.Error()
-		}
+		creds = append(creds, NewManagedIdentityCredential("", nil))
 	}
 
 	if len(creds) == 0 {

@@ -29,19 +29,6 @@ const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type ApplicationHTTPSEndpointAccessMode = original.ApplicationHTTPSEndpointAccessMode
-
-const (
-	WebPage ApplicationHTTPSEndpointAccessMode = original.WebPage
-)
-
-type ApplicationType = original.ApplicationType
-
-const (
-	CustomApplication ApplicationType = original.CustomApplication
-	RServer           ApplicationType = original.RServer
-)
-
 type AsyncOperationState = original.AsyncOperationState
 
 const (
@@ -136,6 +123,7 @@ type BillingMeters = original.BillingMeters
 type BillingResources = original.BillingResources
 type BillingResponseListResult = original.BillingResponseListResult
 type CapabilitiesResult = original.CapabilitiesResult
+type ClientGroupInfo = original.ClientGroupInfo
 type Cluster = original.Cluster
 type ClusterConfigurations = original.ClusterConfigurations
 type ClusterCreateParametersExtended = original.ClusterCreateParametersExtended
@@ -179,6 +167,7 @@ type ExtensionsDisableMonitoringFuture = original.ExtensionsDisableMonitoringFut
 type ExtensionsEnableMonitoringFuture = original.ExtensionsEnableMonitoringFuture
 type GatewaySettings = original.GatewaySettings
 type HardwareProfile = original.HardwareProfile
+type KafkaRestProperties = original.KafkaRestProperties
 type LinuxOperatingSystemProfile = original.LinuxOperatingSystemProfile
 type LocalizedName = original.LocalizedName
 type LocationsClient = original.LocationsClient
@@ -310,12 +299,6 @@ func NewScriptExecutionHistoryClientWithBaseURI(baseURI string, subscriptionID s
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
-}
-func PossibleApplicationHTTPSEndpointAccessModeValues() []ApplicationHTTPSEndpointAccessMode {
-	return original.PossibleApplicationHTTPSEndpointAccessModeValues()
-}
-func PossibleApplicationTypeValues() []ApplicationType {
-	return original.PossibleApplicationTypeValues()
 }
 func PossibleAsyncOperationStateValues() []AsyncOperationState {
 	return original.PossibleAsyncOperationStateValues()

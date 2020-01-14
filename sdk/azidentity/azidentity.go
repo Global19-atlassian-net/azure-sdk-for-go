@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -24,29 +23,13 @@ var (
 	}
 )
 
-var (
-	defaultAuthorityHostURL    *url.URL
-	defaultTokenCredentialOpts *TokenCredentialOptions
-)
-
-func init() {
-	// The error check is handled in azidentity_test.go
-	defaultAuthorityHostURL, _ = url.Parse(defaultAuthorityHost)
-	defaultTokenCredentialOpts = &TokenCredentialOptions{AuthorityHost: defaultAuthorityHostURL}
+type tokenResponse struct {
+	token        *azcore.AccessToken
+	refreshToken string
 }
 
-type internalAccessToken struct {
-	Token        string      `json:"access_token"`
-	RefreshToken string      `json:"refresh_token"`
-	ExpiresIn    json.Number `json:"expires_in"`
-	ExpiresOn    string      `json:"expires_on"`
-	NotBefore    string      `json:"not_before"`
-	Resource     string      `json:"resource"`
-	TokenType    string      `json:"token_type"`
-}
-
-// AuthenticationResponseError is a struct used to marshal responses when authentication has failed
-type AuthenticationResponseError struct {
+// AADAuthenticationFailedError is a struct used to marshal responses when authentication has failed
+type AADAuthenticationFailedError struct {
 	Message       string `json:"error"`
 	Description   string `json:"error_description"`
 	Timestamp     string `json:"timestamp"`
@@ -56,7 +39,7 @@ type AuthenticationResponseError struct {
 	Response      *azcore.Response
 }
 
-func (e *AuthenticationResponseError) Error() string {
+func (e *AADAuthenticationFailedError) Error() string {
 	msg := e.Message
 	if len(e.Description) > 0 {
 		msg += " " + e.Description
@@ -81,11 +64,14 @@ func (e *AuthenticationFailedError) IsNotRetriable() bool {
 }
 
 func (e *AuthenticationFailedError) Error() string {
+	if len(e.msg) == 0 {
+		e.msg = e.inner.Error()
+	}
 	return e.msg
 }
 
-func newAuthenticationResponseError(resp *azcore.Response) error {
-	authFailed := &AuthenticationResponseError{}
+func newAADAuthenticationFailedError(resp *azcore.Response) error {
+	authFailed := &AADAuthenticationFailedError{}
 	err := json.Unmarshal(resp.Payload, authFailed)
 	if err != nil {
 		authFailed.Message = resp.Status
@@ -130,19 +116,29 @@ type TokenCredentialOptions struct {
 }
 
 // NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
-func (c *TokenCredentialOptions) setDefaultValues() *TokenCredentialOptions {
+// NewIdentityClientOptions initializes an instance of IdentityClientOptions with default settings
+func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, error) {
 	if c == nil {
-		c = defaultTokenCredentialOpts
+		defaultAuthorityHostURL, err := url.Parse(defaultAuthorityHost)
+		if err != nil {
+			return nil, err
+		}
+		c = &TokenCredentialOptions{AuthorityHost: defaultAuthorityHostURL}
 	}
 
 	if c.AuthorityHost == nil {
-		c.AuthorityHost = defaultTokenCredentialOpts.AuthorityHost
+		defaultAuthorityHostURL, err := url.Parse(defaultAuthorityHost)
+		if err != nil {
+			return nil, err
+		}
+		c.AuthorityHost = defaultAuthorityHostURL
 	}
+
 	if len(c.AuthorityHost.Path) == 0 || c.AuthorityHost.Path[len(c.AuthorityHost.Path)-1:] != "/" {
 		c.AuthorityHost.Path = c.AuthorityHost.Path + "/"
 	}
 
-	return c
+	return c, nil
 }
 
 // NewDefaultPipeline creates a Pipeline using the specified pipeline options
@@ -195,18 +191,4 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 		azcore.NewUniqueRequestIDPolicy(),
 		azcore.NewRetryPolicy(retryOpts),
 		azcore.NewRequestLogPolicy(o.LogOptions))
-}
-
-const defaultSuffix = "/.default"
-
-func scopesToResource(scope string) string {
-	if strings.HasSuffix(scope, defaultSuffix) {
-		return scope[:len(scope)-len(defaultSuffix)]
-	}
-	return scope
-}
-
-func resourceToScope(resource string) string {
-	resource += defaultSuffix
-	return resource
 }

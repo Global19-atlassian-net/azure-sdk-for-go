@@ -47,7 +47,7 @@ var _ AvailabilitySetsClientAPI = (*compute.AvailabilitySetsClient)(nil)
 type ProximityPlacementGroupsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters compute.ProximityPlacementGroup) (result compute.ProximityPlacementGroup, err error)
 	Delete(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string) (result autorest.Response, err error)
-	Get(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string) (result compute.ProximityPlacementGroup, err error)
+	Get(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, includeColocationStatus string) (result compute.ProximityPlacementGroup, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.ProximityPlacementGroupListResultPage, err error)
 	ListBySubscription(ctx context.Context) (result compute.ProximityPlacementGroupListResultPage, err error)
 	Update(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters compute.ProximityPlacementGroupUpdate) (result compute.ProximityPlacementGroup, err error)
@@ -127,11 +127,12 @@ type VirtualMachinesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, VMName string, expand compute.InstanceViewTypes) (result compute.VirtualMachine, err error)
 	InstanceView(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineInstanceView, err error)
 	List(ctx context.Context, resourceGroupName string) (result compute.VirtualMachineListResultPage, err error)
-	ListAll(ctx context.Context) (result compute.VirtualMachineListResultPage, err error)
+	ListAll(ctx context.Context, statusOnly string) (result compute.VirtualMachineListResultPage, err error)
 	ListAvailableSizes(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineSizeListResult, err error)
 	ListByLocation(ctx context.Context, location string) (result compute.VirtualMachineListResultPage, err error)
 	PerformMaintenance(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesPerformMaintenanceFuture, err error)
 	PowerOff(ctx context.Context, resourceGroupName string, VMName string, skipShutdown *bool) (result compute.VirtualMachinesPowerOffFuture, err error)
+	Reapply(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesReapplyFuture, err error)
 	Redeploy(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesRedeployFuture, err error)
 	Reimage(ctx context.Context, resourceGroupName string, VMName string, parameters *compute.VirtualMachineReimageParameters) (result compute.VirtualMachinesReimageFuture, err error)
 	Restart(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachinesRestartFuture, err error)
@@ -194,6 +195,7 @@ type VirtualMachineScaleSetExtensionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, VMScaleSetName string, vmssExtensionName string) (result compute.VirtualMachineScaleSetExtensionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, VMScaleSetName string, vmssExtensionName string, expand string) (result compute.VirtualMachineScaleSetExtension, err error)
 	List(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetExtensionListResultPage, err error)
+	Update(ctx context.Context, resourceGroupName string, VMScaleSetName string, vmssExtensionName string, extensionParameters compute.VirtualMachineScaleSetExtensionUpdate) (result compute.VirtualMachineScaleSetExtensionsUpdateFuture, err error)
 }
 
 var _ VirtualMachineScaleSetExtensionsClientAPI = (*compute.VirtualMachineScaleSetExtensionsClient)(nil)
@@ -207,6 +209,17 @@ type VirtualMachineScaleSetRollingUpgradesClientAPI interface {
 }
 
 var _ VirtualMachineScaleSetRollingUpgradesClientAPI = (*compute.VirtualMachineScaleSetRollingUpgradesClient)(nil)
+
+// VirtualMachineScaleSetVMExtensionsClientAPI contains the set of methods on the VirtualMachineScaleSetVMExtensionsClient type.
+type VirtualMachineScaleSetVMExtensionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string, extensionParameters compute.VirtualMachineExtension) (result compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string) (result compute.VirtualMachineScaleSetVMExtensionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string, expand string) (result compute.VirtualMachineExtension, err error)
+	List(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, expand string) (result compute.VirtualMachineExtensionsListResult, err error)
+	Update(ctx context.Context, resourceGroupName string, VMScaleSetName string, instanceID string, VMExtensionName string, extensionParameters compute.VirtualMachineExtensionUpdate) (result compute.VirtualMachineScaleSetVMExtensionsUpdateFuture, err error)
+}
+
+var _ VirtualMachineScaleSetVMExtensionsClientAPI = (*compute.VirtualMachineScaleSetVMExtensionsClient)(nil)
 
 // VirtualMachineScaleSetVMsClientAPI contains the set of methods on the VirtualMachineScaleSetVMsClient type.
 type VirtualMachineScaleSetVMsClientAPI interface {
@@ -246,7 +259,7 @@ var _ VirtualMachineRunCommandsClientAPI = (*compute.VirtualMachineRunCommandsCl
 
 // ResourceSkusClientAPI contains the set of methods on the ResourceSkusClient type.
 type ResourceSkusClientAPI interface {
-	List(ctx context.Context) (result compute.ResourceSkusResultPage, err error)
+	List(ctx context.Context, filter string) (result compute.ResourceSkusResultPage, err error)
 }
 
 var _ ResourceSkusClientAPI = (*compute.ResourceSkusClient)(nil)
@@ -279,6 +292,18 @@ type SnapshotsClientAPI interface {
 
 var _ SnapshotsClientAPI = (*compute.SnapshotsClient)(nil)
 
+// DiskEncryptionSetsClientAPI contains the set of methods on the DiskEncryptionSetsClient type.
+type DiskEncryptionSetsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet compute.DiskEncryptionSet) (result compute.DiskEncryptionSetsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (result compute.DiskEncryptionSetsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, diskEncryptionSetName string) (result compute.DiskEncryptionSet, err error)
+	List(ctx context.Context) (result compute.DiskEncryptionSetListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.DiskEncryptionSetListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet compute.DiskEncryptionSetUpdate) (result compute.DiskEncryptionSetsUpdateFuture, err error)
+}
+
+var _ DiskEncryptionSetsClientAPI = (*compute.DiskEncryptionSetsClient)(nil)
+
 // GalleriesClientAPI contains the set of methods on the GalleriesClient type.
 type GalleriesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery compute.Gallery) (result compute.GalleriesCreateOrUpdateFuture, err error)
@@ -286,6 +311,7 @@ type GalleriesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, galleryName string) (result compute.Gallery, err error)
 	List(ctx context.Context) (result compute.GalleryListPage, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.GalleryListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, galleryName string, gallery compute.GalleryUpdate) (result compute.GalleriesUpdateFuture, err error)
 }
 
 var _ GalleriesClientAPI = (*compute.GalleriesClient)(nil)
@@ -296,6 +322,7 @@ type GalleryImagesClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string) (result compute.GalleryImagesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string) (result compute.GalleryImage, err error)
 	ListByGallery(ctx context.Context, resourceGroupName string, galleryName string) (result compute.GalleryImageListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage compute.GalleryImageUpdate) (result compute.GalleryImagesUpdateFuture, err error)
 }
 
 var _ GalleryImagesClientAPI = (*compute.GalleryImagesClient)(nil)
@@ -306,6 +333,7 @@ type GalleryImageVersionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string) (result compute.GalleryImageVersionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, expand compute.ReplicationStatusTypes) (result compute.GalleryImageVersion, err error)
 	ListByGalleryImage(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string) (result compute.GalleryImageVersionListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImageVersionName string, galleryImageVersion compute.GalleryImageVersionUpdate) (result compute.GalleryImageVersionsUpdateFuture, err error)
 }
 
 var _ GalleryImageVersionsClientAPI = (*compute.GalleryImageVersionsClient)(nil)
@@ -316,6 +344,7 @@ type GalleryApplicationsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string) (result compute.GalleryApplicationsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string) (result compute.GalleryApplication, err error)
 	ListByGallery(ctx context.Context, resourceGroupName string, galleryName string) (result compute.GalleryApplicationListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplication compute.GalleryApplicationUpdate) (result compute.GalleryApplicationsUpdateFuture, err error)
 }
 
 var _ GalleryApplicationsClientAPI = (*compute.GalleryApplicationsClient)(nil)
@@ -326,6 +355,7 @@ type GalleryApplicationVersionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string) (result compute.GalleryApplicationVersionsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, expand compute.ReplicationStatusTypes) (result compute.GalleryApplicationVersion, err error)
 	ListByGalleryApplication(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string) (result compute.GalleryApplicationVersionListPage, err error)
+	Update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion compute.GalleryApplicationVersionUpdate) (result compute.GalleryApplicationVersionsUpdateFuture, err error)
 }
 
 var _ GalleryApplicationVersionsClientAPI = (*compute.GalleryApplicationVersionsClient)(nil)

@@ -46,6 +46,12 @@ const (
 	Enabled  GeoRedundantBackup = original.Enabled
 )
 
+type IdentityType = original.IdentityType
+
+const (
+	SystemAssigned IdentityType = original.SystemAssigned
+)
+
 type OperationOrigin = original.OperationOrigin
 
 const (
@@ -72,6 +78,7 @@ const (
 type ServerVersion = original.ServerVersion
 
 const (
+	EightFullStopZero ServerVersion = original.EightFullStopZero
 	FiveFullStopSeven ServerVersion = original.FiveFullStopSeven
 	FiveFullStopSix   ServerVersion = original.FiveFullStopSix
 )
@@ -146,8 +153,15 @@ type PerformanceTierProperties = original.PerformanceTierProperties
 type PerformanceTierServiceLevelObjectives = original.PerformanceTierServiceLevelObjectives
 type ProxyResource = original.ProxyResource
 type ReplicasClient = original.ReplicasClient
+type ResourceIdentity = original.ResourceIdentity
 type SecurityAlertPolicyProperties = original.SecurityAlertPolicyProperties
 type Server = original.Server
+type ServerAdministratorProperties = original.ServerAdministratorProperties
+type ServerAdministratorResource = original.ServerAdministratorResource
+type ServerAdministratorResourceListResult = original.ServerAdministratorResourceListResult
+type ServerAdministratorsClient = original.ServerAdministratorsClient
+type ServerAdministratorsCreateOrUpdateFuture = original.ServerAdministratorsCreateOrUpdateFuture
+type ServerAdministratorsDeleteFuture = original.ServerAdministratorsDeleteFuture
 type ServerForCreate = original.ServerForCreate
 type ServerListResult = original.ServerListResult
 type ServerProperties = original.ServerProperties
@@ -229,6 +243,12 @@ func NewReplicasClient(subscriptionID string) ReplicasClient {
 func NewReplicasClientWithBaseURI(baseURI string, subscriptionID string) ReplicasClient {
 	return original.NewReplicasClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewServerAdministratorsClient(subscriptionID string) ServerAdministratorsClient {
+	return original.NewServerAdministratorsClient(subscriptionID)
+}
+func NewServerAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ServerAdministratorsClient {
+	return original.NewServerAdministratorsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewServerSecurityAlertPoliciesClient(subscriptionID string) ServerSecurityAlertPoliciesClient {
 	return original.NewServerSecurityAlertPoliciesClient(subscriptionID)
 }
@@ -261,6 +281,9 @@ func PossibleCreateModeValues() []CreateMode {
 }
 func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
 	return original.PossibleGeoRedundantBackupValues()
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
 }
 func PossibleOperationOriginValues() []OperationOrigin {
 	return original.PossibleOperationOriginValues()

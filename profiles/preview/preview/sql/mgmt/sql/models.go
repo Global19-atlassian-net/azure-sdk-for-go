@@ -92,6 +92,24 @@ const (
 	ManagedServerCreateModePointInTimeRestore ManagedServerCreateMode = original.ManagedServerCreateModePointInTimeRestore
 )
 
+type ManagementOperationState = original.ManagementOperationState
+
+const (
+	CancelInProgress ManagementOperationState = original.CancelInProgress
+	Cancelled        ManagementOperationState = original.Cancelled
+	Failed           ManagementOperationState = original.Failed
+	InProgress       ManagementOperationState = original.InProgress
+	Pending          ManagementOperationState = original.Pending
+	Succeeded        ManagementOperationState = original.Succeeded
+)
+
+type ReplicaType = original.ReplicaType
+
+const (
+	Primary           ReplicaType = original.Primary
+	ReadableSecondary ReplicaType = original.ReadableSecondary
+)
+
 type SecurityAlertPolicyState = original.SecurityAlertPolicyState
 
 const (
@@ -107,6 +125,10 @@ const (
 	Recommended SensitivityLabelSource = original.Recommended
 )
 
+type AdministratorListResult = original.AdministratorListResult
+type AdministratorListResultIterator = original.AdministratorListResultIterator
+type AdministratorListResultPage = original.AdministratorListResultPage
+type AdministratorProperties = original.AdministratorProperties
 type BaseClient = original.BaseClient
 type CompleteDatabaseRestoreDefinition = original.CompleteDatabaseRestoreDefinition
 type DatabaseSecurityAlertListResult = original.DatabaseSecurityAlertListResult
@@ -147,6 +169,12 @@ type ManagedInstance = original.ManagedInstance
 type ManagedInstanceListResult = original.ManagedInstanceListResult
 type ManagedInstanceListResultIterator = original.ManagedInstanceListResultIterator
 type ManagedInstanceListResultPage = original.ManagedInstanceListResultPage
+type ManagedInstanceOperation = original.ManagedInstanceOperation
+type ManagedInstanceOperationListResult = original.ManagedInstanceOperationListResult
+type ManagedInstanceOperationListResultIterator = original.ManagedInstanceOperationListResultIterator
+type ManagedInstanceOperationListResultPage = original.ManagedInstanceOperationListResultPage
+type ManagedInstanceOperationProperties = original.ManagedInstanceOperationProperties
+type ManagedInstanceOperationsClient = original.ManagedInstanceOperationsClient
 type ManagedInstanceProperties = original.ManagedInstanceProperties
 type ManagedInstanceUpdate = original.ManagedInstanceUpdate
 type ManagedInstanceVulnerabilityAssessment = original.ManagedInstanceVulnerabilityAssessment
@@ -179,6 +207,10 @@ type SensitivityLabelListResult = original.SensitivityLabelListResult
 type SensitivityLabelListResultIterator = original.SensitivityLabelListResultIterator
 type SensitivityLabelListResultPage = original.SensitivityLabelListResultPage
 type SensitivityLabelProperties = original.SensitivityLabelProperties
+type ServerAzureADAdministrator = original.ServerAzureADAdministrator
+type ServerAzureADAdministratorsClient = original.ServerAzureADAdministratorsClient
+type ServerAzureADAdministratorsCreateOrUpdateFuture = original.ServerAzureADAdministratorsCreateOrUpdateFuture
+type ServerAzureADAdministratorsDeleteFuture = original.ServerAzureADAdministratorsDeleteFuture
 type ServerVulnerabilityAssessment = original.ServerVulnerabilityAssessment
 type ServerVulnerabilityAssessmentListResult = original.ServerVulnerabilityAssessmentListResult
 type ServerVulnerabilityAssessmentListResultIterator = original.ServerVulnerabilityAssessmentListResultIterator
@@ -196,6 +228,12 @@ type VulnerabilityAssessmentRecurringScansProperties = original.VulnerabilityAss
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAdministratorListResultIterator(page AdministratorListResultPage) AdministratorListResultIterator {
+	return original.NewAdministratorListResultIterator(page)
+}
+func NewAdministratorListResultPage(getNextPage func(context.Context, AdministratorListResult) (AdministratorListResult, error)) AdministratorListResultPage {
+	return original.NewAdministratorListResultPage(getNextPage)
 }
 func NewDatabaseSecurityAlertListResultIterator(page DatabaseSecurityAlertListResultPage) DatabaseSecurityAlertListResultIterator {
 	return original.NewDatabaseSecurityAlertListResultIterator(page)
@@ -263,6 +301,18 @@ func NewManagedInstanceListResultIterator(page ManagedInstanceListResultPage) Ma
 func NewManagedInstanceListResultPage(getNextPage func(context.Context, ManagedInstanceListResult) (ManagedInstanceListResult, error)) ManagedInstanceListResultPage {
 	return original.NewManagedInstanceListResultPage(getNextPage)
 }
+func NewManagedInstanceOperationListResultIterator(page ManagedInstanceOperationListResultPage) ManagedInstanceOperationListResultIterator {
+	return original.NewManagedInstanceOperationListResultIterator(page)
+}
+func NewManagedInstanceOperationListResultPage(getNextPage func(context.Context, ManagedInstanceOperationListResult) (ManagedInstanceOperationListResult, error)) ManagedInstanceOperationListResultPage {
+	return original.NewManagedInstanceOperationListResultPage(getNextPage)
+}
+func NewManagedInstanceOperationsClient(subscriptionID string) ManagedInstanceOperationsClient {
+	return original.NewManagedInstanceOperationsClient(subscriptionID)
+}
+func NewManagedInstanceOperationsClientWithBaseURI(baseURI string, subscriptionID string) ManagedInstanceOperationsClient {
+	return original.NewManagedInstanceOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewManagedInstanceVulnerabilityAssessmentListResultIterator(page ManagedInstanceVulnerabilityAssessmentListResultPage) ManagedInstanceVulnerabilityAssessmentListResultIterator {
 	return original.NewManagedInstanceVulnerabilityAssessmentListResultIterator(page)
 }
@@ -298,6 +348,12 @@ func NewSensitivityLabelListResultIterator(page SensitivityLabelListResultPage) 
 }
 func NewSensitivityLabelListResultPage(getNextPage func(context.Context, SensitivityLabelListResult) (SensitivityLabelListResult, error)) SensitivityLabelListResultPage {
 	return original.NewSensitivityLabelListResultPage(getNextPage)
+}
+func NewServerAzureADAdministratorsClient(subscriptionID string) ServerAzureADAdministratorsClient {
+	return original.NewServerAzureADAdministratorsClient(subscriptionID)
+}
+func NewServerAzureADAdministratorsClientWithBaseURI(baseURI string, subscriptionID string) ServerAzureADAdministratorsClient {
+	return original.NewServerAzureADAdministratorsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewServerVulnerabilityAssessmentListResultIterator(page ServerVulnerabilityAssessmentListResultPage) ServerVulnerabilityAssessmentListResultIterator {
 	return original.NewServerVulnerabilityAssessmentListResultIterator(page)
@@ -349,6 +405,12 @@ func PossibleManagedInstanceProxyOverrideValues() []ManagedInstanceProxyOverride
 }
 func PossibleManagedServerCreateModeValues() []ManagedServerCreateMode {
 	return original.PossibleManagedServerCreateModeValues()
+}
+func PossibleManagementOperationStateValues() []ManagementOperationState {
+	return original.PossibleManagementOperationStateValues()
+}
+func PossibleReplicaTypeValues() []ReplicaType {
+	return original.PossibleReplicaTypeValues()
 }
 func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
 	return original.PossibleSecurityAlertPolicyStateValues()

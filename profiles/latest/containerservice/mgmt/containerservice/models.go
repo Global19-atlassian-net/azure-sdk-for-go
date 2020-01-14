@@ -22,7 +22,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-08-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-11-01/containerservice"
 )
 
 const (
@@ -124,6 +124,13 @@ const (
 	DockerCE   OrchestratorTypes = original.DockerCE
 	Kubernetes OrchestratorTypes = original.Kubernetes
 	Swarm      OrchestratorTypes = original.Swarm
+)
+
+type OutboundType = original.OutboundType
+
+const (
+	LoadBalancer       OutboundType = original.LoadBalancer
+	UserDefinedRouting OutboundType = original.UserDefinedRouting
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -370,6 +377,7 @@ type ManagedClusterAADProfile = original.ManagedClusterAADProfile
 type ManagedClusterAPIServerAccessProfile = original.ManagedClusterAPIServerAccessProfile
 type ManagedClusterAccessProfile = original.ManagedClusterAccessProfile
 type ManagedClusterAddonProfile = original.ManagedClusterAddonProfile
+type ManagedClusterAddonProfileIdentity = original.ManagedClusterAddonProfileIdentity
 type ManagedClusterAgentPoolProfile = original.ManagedClusterAgentPoolProfile
 type ManagedClusterAgentPoolProfileProperties = original.ManagedClusterAgentPoolProfileProperties
 type ManagedClusterIdentity = original.ManagedClusterIdentity
@@ -383,6 +391,7 @@ type ManagedClusterLoadBalancerProfileOutboundIPs = original.ManagedClusterLoadB
 type ManagedClusterPoolUpgradeProfile = original.ManagedClusterPoolUpgradeProfile
 type ManagedClusterPoolUpgradeProfileUpgradesItem = original.ManagedClusterPoolUpgradeProfileUpgradesItem
 type ManagedClusterProperties = original.ManagedClusterProperties
+type ManagedClusterPropertiesIdentityProfileValue = original.ManagedClusterPropertiesIdentityProfileValue
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
@@ -392,6 +401,7 @@ type ManagedClustersCreateOrUpdateFuture = original.ManagedClustersCreateOrUpdat
 type ManagedClustersDeleteFuture = original.ManagedClustersDeleteFuture
 type ManagedClustersResetAADProfileFuture = original.ManagedClustersResetAADProfileFuture
 type ManagedClustersResetServicePrincipalProfileFuture = original.ManagedClustersResetServicePrincipalProfileFuture
+type ManagedClustersRotateClusterCertificatesFuture = original.ManagedClustersRotateClusterCertificatesFuture
 type ManagedClustersUpdateTagsFuture = original.ManagedClustersUpdateTagsFuture
 type MasterProfile = original.MasterProfile
 type NetworkProfile = original.NetworkProfile
@@ -430,6 +440,7 @@ type SSHPublicKey = original.SSHPublicKey
 type ServicePrincipalProfile = original.ServicePrincipalProfile
 type SubResource = original.SubResource
 type TagsObject = original.TagsObject
+type UserAssignedIdentity = original.UserAssignedIdentity
 type VMDiagnostics = original.VMDiagnostics
 type WindowsProfile = original.WindowsProfile
 
@@ -519,6 +530,9 @@ func PossibleOpenShiftContainerServiceVMSizeValues() []OpenShiftContainerService
 }
 func PossibleOrchestratorTypesValues() []OrchestratorTypes {
 	return original.PossibleOrchestratorTypesValues()
+}
+func PossibleOutboundTypeValues() []OutboundType {
+	return original.PossibleOutboundTypeValues()
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()

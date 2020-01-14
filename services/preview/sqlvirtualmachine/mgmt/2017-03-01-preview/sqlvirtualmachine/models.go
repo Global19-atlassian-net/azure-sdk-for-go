@@ -231,13 +231,15 @@ type SQLServerLicenseType string
 const (
 	// AHUB ...
 	AHUB SQLServerLicenseType = "AHUB"
+	// DR ...
+	DR SQLServerLicenseType = "DR"
 	// PAYG ...
 	PAYG SQLServerLicenseType = "PAYG"
 )
 
 // PossibleSQLServerLicenseTypeValues returns an array of possible values for the SQLServerLicenseType const type.
 func PossibleSQLServerLicenseTypeValues() []SQLServerLicenseType {
-	return []SQLServerLicenseType{AHUB, PAYG}
+	return []SQLServerLicenseType{AHUB, DR, PAYG}
 }
 
 // SQLVMGroupImageSku enumerates the values for sqlvm group image sku.
@@ -270,6 +272,23 @@ const (
 // PossibleSQLWorkloadTypeValues returns an array of possible values for the SQLWorkloadType const type.
 func PossibleSQLWorkloadTypeValues() []SQLWorkloadType {
 	return []SQLWorkloadType{DW, GENERAL, OLTP}
+}
+
+// StorageWorkloadType enumerates the values for storage workload type.
+type StorageWorkloadType string
+
+const (
+	// StorageWorkloadTypeDW ...
+	StorageWorkloadTypeDW StorageWorkloadType = "DW"
+	// StorageWorkloadTypeGENERAL ...
+	StorageWorkloadTypeGENERAL StorageWorkloadType = "GENERAL"
+	// StorageWorkloadTypeOLTP ...
+	StorageWorkloadTypeOLTP StorageWorkloadType = "OLTP"
+)
+
+// PossibleStorageWorkloadTypeValues returns an array of possible values for the StorageWorkloadType const type.
+func PossibleStorageWorkloadTypeValues() []StorageWorkloadType {
+	return []StorageWorkloadType{StorageWorkloadTypeDW, StorageWorkloadTypeGENERAL, StorageWorkloadTypeOLTP}
 }
 
 // AdditionalFeaturesServerConfigurations additional SQL Server feature settings.
@@ -1330,7 +1349,7 @@ type Properties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// SQLImageOffer - SQL image offer. Examples include SQL2016-WS2016, SQL2017-WS2016.
 	SQLImageOffer *string `json:"sqlImageOffer,omitempty"`
-	// SQLServerLicenseType - SQL Server license type. Possible values include: 'PAYG', 'AHUB'
+	// SQLServerLicenseType - SQL Server license type. Possible values include: 'PAYG', 'AHUB', 'DR'
 	SQLServerLicenseType SQLServerLicenseType `json:"sqlServerLicenseType,omitempty"`
 	// SQLManagement - SQL Server Management type. Possible values include: 'Full', 'LightWeight', 'NoAgent'
 	SQLManagement SQLManagementMode `json:"sqlManagement,omitempty"`
@@ -1348,6 +1367,8 @@ type Properties struct {
 	KeyVaultCredentialSettings *KeyVaultCredentialSettings `json:"keyVaultCredentialSettings,omitempty"`
 	// ServerConfigurationsManagementSettings - SQL Server configuration management settings.
 	ServerConfigurationsManagementSettings *ServerConfigurationsManagementSettings `json:"serverConfigurationsManagementSettings,omitempty"`
+	// StorageConfigurationSettings - Storage Configuration Settings.
+	StorageConfigurationSettings *StorageConfigurationSettings `json:"storageConfigurationSettings,omitempty"`
 }
 
 // ProxyResource ARM proxy resource.
@@ -1402,6 +1423,14 @@ type SQLConnectivityUpdateSettings struct {
 	SQLAuthUpdateUserName *string `json:"sqlAuthUpdateUserName,omitempty"`
 	// SQLAuthUpdatePassword - SQL Server sysadmin login password.
 	SQLAuthUpdatePassword *string `json:"sqlAuthUpdatePassword,omitempty"`
+}
+
+// SQLStorageSettings set disk storage settings for SQL Server.
+type SQLStorageSettings struct {
+	// Luns - Logical Unit Numbers for the disks.
+	Luns *[]int32 `json:"luns,omitempty"`
+	// DefaultFilePath - SQL Server default file path
+	DefaultFilePath *string `json:"defaultFilePath,omitempty"`
 }
 
 // SQLStorageUpdateSettings set disk storage settings for SQL Server.
@@ -1614,6 +1643,20 @@ func (future *SQLVirtualMachinesUpdateFutureType) Result(client SQLVirtualMachin
 type SQLWorkloadTypeUpdateSettings struct {
 	// SQLWorkloadType - SQL Server workload type. Possible values include: 'GENERAL', 'OLTP', 'DW'
 	SQLWorkloadType SQLWorkloadType `json:"sqlWorkloadType,omitempty"`
+}
+
+// StorageConfigurationSettings storage Configurations for SQL Data, Log and TempDb.
+type StorageConfigurationSettings struct {
+	// SQLDataSettings - SQL Server Data Storage Settings.
+	SQLDataSettings *SQLStorageSettings `json:"sqlDataSettings,omitempty"`
+	// SQLLogSettings - SQL Server Log Storage Settings.
+	SQLLogSettings *SQLStorageSettings `json:"sqlLogSettings,omitempty"`
+	// SQLTempDbSettings - SQL Server TempDb Storage Settings.
+	SQLTempDbSettings *SQLStorageSettings `json:"sqlTempDbSettings,omitempty"`
+	// DiskConfigurationType - Disk configuration to apply to SQL Server. Possible values include: 'NEW', 'EXTEND', 'ADD'
+	DiskConfigurationType DiskConfigurationType `json:"diskConfigurationType,omitempty"`
+	// StorageWorkloadType - Storage workload type. Possible values include: 'StorageWorkloadTypeGENERAL', 'StorageWorkloadTypeOLTP', 'StorageWorkloadTypeDW'
+	StorageWorkloadType StorageWorkloadType `json:"storageWorkloadType,omitempty"`
 }
 
 // TrackedResource ARM tracked top level resource.

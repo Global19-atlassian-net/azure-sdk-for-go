@@ -23,6 +23,18 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// AutomationsClientAPI contains the set of methods on the AutomationsClient type.
+type AutomationsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, automationName string, automation security.Automation) (result security.Automation, err error)
+	Delete(ctx context.Context, resourceGroupName string, automationName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, automationName string) (result security.Automation, err error)
+	List(ctx context.Context) (result security.AutomationListPage, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result security.AutomationListPage, err error)
+	Validate(ctx context.Context, resourceGroupName string, automationName string, automation security.Automation) (result security.AutomationValidationStatus, err error)
+}
+
+var _ AutomationsClientAPI = (*security.AutomationsClient)(nil)
+
 // SubAssessmentsClientAPI contains the set of methods on the SubAssessmentsClient type.
 type SubAssessmentsClientAPI interface {
 	Get(ctx context.Context, scope string, assessmentName string, subAssessmentName string) (result security.SubAssessment, err error)
@@ -179,8 +191,10 @@ type AlertsClientAPI interface {
 	ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string) (result security.AlertListPage, err error)
 	ListResourceGroupLevelAlertsByRegion(ctx context.Context, resourceGroupName string, filter string, selectParameter string, expand string) (result security.AlertListPage, err error)
 	ListSubscriptionLevelAlertsByRegion(ctx context.Context, filter string, selectParameter string, expand string) (result security.AlertListPage, err error)
-	UpdateResourceGroupLevelAlertState(ctx context.Context, alertName string, alertUpdateActionType string, resourceGroupName string) (result autorest.Response, err error)
-	UpdateSubscriptionLevelAlertState(ctx context.Context, alertName string, alertUpdateActionType string) (result autorest.Response, err error)
+	UpdateResourceGroupLevelAlertStateToDismiss(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
+	UpdateResourceGroupLevelAlertStateToReactivate(ctx context.Context, alertName string, resourceGroupName string) (result autorest.Response, err error)
+	UpdateSubscriptionLevelAlertStateToDismiss(ctx context.Context, alertName string) (result autorest.Response, err error)
+	UpdateSubscriptionLevelAlertStateToReactivate(ctx context.Context, alertName string) (result autorest.Response, err error)
 }
 
 var _ AlertsClientAPI = (*security.AlertsClient)(nil)

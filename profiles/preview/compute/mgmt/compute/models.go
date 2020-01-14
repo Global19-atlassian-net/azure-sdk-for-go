@@ -162,6 +162,12 @@ const (
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = original.DiskCreateOptionTypesFromImage
 )
 
+type DiskEncryptionSetIdentityType = original.DiskEncryptionSetIdentityType
+
+const (
+	SystemAssigned DiskEncryptionSetIdentityType = original.SystemAssigned
+)
+
 type DiskState = original.DiskState
 
 const (
@@ -180,6 +186,13 @@ const (
 	StandardLRS    DiskStorageAccountTypes = original.StandardLRS
 	StandardSSDLRS DiskStorageAccountTypes = original.StandardSSDLRS
 	UltraSSDLRS    DiskStorageAccountTypes = original.UltraSSDLRS
+)
+
+type EncryptionType = original.EncryptionType
+
+const (
+	EncryptionAtRestWithCustomerKey EncryptionType = original.EncryptionAtRestWithCustomerKey
+	EncryptionAtRestWithPlatformKey EncryptionType = original.EncryptionAtRestWithPlatformKey
 )
 
 type HostCaching = original.HostCaching
@@ -458,6 +471,7 @@ type VirtualMachinePriorityTypes = original.VirtualMachinePriorityTypes
 const (
 	Low     VirtualMachinePriorityTypes = original.Low
 	Regular VirtualMachinePriorityTypes = original.Regular
+	Spot    VirtualMachinePriorityTypes = original.Spot
 )
 
 type VirtualMachineScaleSetScaleInRules = original.VirtualMachineScaleSetScaleInRules
@@ -654,6 +668,7 @@ type AdditionalCapabilities = original.AdditionalCapabilities
 type AdditionalUnattendContent = original.AdditionalUnattendContent
 type AutomaticOSUpgradePolicy = original.AutomaticOSUpgradePolicy
 type AutomaticOSUpgradeProperties = original.AutomaticOSUpgradeProperties
+type AutomaticRepairsPolicy = original.AutomaticRepairsPolicy
 type AvailabilitySet = original.AvailabilitySet
 type AvailabilitySetListResult = original.AvailabilitySetListResult
 type AvailabilitySetListResultIterator = original.AvailabilitySetListResultIterator
@@ -712,6 +727,17 @@ type DiagnosticsProfile = original.DiagnosticsProfile
 type DiffDiskSettings = original.DiffDiskSettings
 type Disallowed = original.Disallowed
 type Disk = original.Disk
+type DiskEncryptionSet = original.DiskEncryptionSet
+type DiskEncryptionSetList = original.DiskEncryptionSetList
+type DiskEncryptionSetListIterator = original.DiskEncryptionSetListIterator
+type DiskEncryptionSetListPage = original.DiskEncryptionSetListPage
+type DiskEncryptionSetParameters = original.DiskEncryptionSetParameters
+type DiskEncryptionSetUpdate = original.DiskEncryptionSetUpdate
+type DiskEncryptionSetUpdateProperties = original.DiskEncryptionSetUpdateProperties
+type DiskEncryptionSetsClient = original.DiskEncryptionSetsClient
+type DiskEncryptionSetsCreateOrUpdateFuture = original.DiskEncryptionSetsCreateOrUpdateFuture
+type DiskEncryptionSetsDeleteFuture = original.DiskEncryptionSetsDeleteFuture
+type DiskEncryptionSetsUpdateFuture = original.DiskEncryptionSetsUpdateFuture
 type DiskEncryptionSettings = original.DiskEncryptionSettings
 type DiskInstanceView = original.DiskInstanceView
 type DiskList = original.DiskList
@@ -727,29 +753,37 @@ type DisksDeleteFuture = original.DisksDeleteFuture
 type DisksGrantAccessFuture = original.DisksGrantAccessFuture
 type DisksRevokeAccessFuture = original.DisksRevokeAccessFuture
 type DisksUpdateFuture = original.DisksUpdateFuture
+type Encryption = original.Encryption
+type EncryptionSetIdentity = original.EncryptionSetIdentity
+type EncryptionSetProperties = original.EncryptionSetProperties
 type EncryptionSettingsCollection = original.EncryptionSettingsCollection
 type EncryptionSettingsElement = original.EncryptionSettingsElement
 type GalleriesClient = original.GalleriesClient
 type GalleriesCreateOrUpdateFuture = original.GalleriesCreateOrUpdateFuture
 type GalleriesDeleteFuture = original.GalleriesDeleteFuture
+type GalleriesUpdateFuture = original.GalleriesUpdateFuture
 type Gallery = original.Gallery
 type GalleryApplication = original.GalleryApplication
 type GalleryApplicationList = original.GalleryApplicationList
 type GalleryApplicationListIterator = original.GalleryApplicationListIterator
 type GalleryApplicationListPage = original.GalleryApplicationListPage
 type GalleryApplicationProperties = original.GalleryApplicationProperties
+type GalleryApplicationUpdate = original.GalleryApplicationUpdate
 type GalleryApplicationVersion = original.GalleryApplicationVersion
 type GalleryApplicationVersionList = original.GalleryApplicationVersionList
 type GalleryApplicationVersionListIterator = original.GalleryApplicationVersionListIterator
 type GalleryApplicationVersionListPage = original.GalleryApplicationVersionListPage
 type GalleryApplicationVersionProperties = original.GalleryApplicationVersionProperties
 type GalleryApplicationVersionPublishingProfile = original.GalleryApplicationVersionPublishingProfile
+type GalleryApplicationVersionUpdate = original.GalleryApplicationVersionUpdate
 type GalleryApplicationVersionsClient = original.GalleryApplicationVersionsClient
 type GalleryApplicationVersionsCreateOrUpdateFuture = original.GalleryApplicationVersionsCreateOrUpdateFuture
 type GalleryApplicationVersionsDeleteFuture = original.GalleryApplicationVersionsDeleteFuture
+type GalleryApplicationVersionsUpdateFuture = original.GalleryApplicationVersionsUpdateFuture
 type GalleryApplicationsClient = original.GalleryApplicationsClient
 type GalleryApplicationsCreateOrUpdateFuture = original.GalleryApplicationsCreateOrUpdateFuture
 type GalleryApplicationsDeleteFuture = original.GalleryApplicationsDeleteFuture
+type GalleryApplicationsUpdateFuture = original.GalleryApplicationsUpdateFuture
 type GalleryArtifactPublishingProfileBase = original.GalleryArtifactPublishingProfileBase
 type GalleryArtifactSource = original.GalleryArtifactSource
 type GalleryArtifactVersionSource = original.GalleryArtifactVersionSource
@@ -762,6 +796,7 @@ type GalleryImageList = original.GalleryImageList
 type GalleryImageListIterator = original.GalleryImageListIterator
 type GalleryImageListPage = original.GalleryImageListPage
 type GalleryImageProperties = original.GalleryImageProperties
+type GalleryImageUpdate = original.GalleryImageUpdate
 type GalleryImageVersion = original.GalleryImageVersion
 type GalleryImageVersionList = original.GalleryImageVersionList
 type GalleryImageVersionListIterator = original.GalleryImageVersionListIterator
@@ -769,21 +804,26 @@ type GalleryImageVersionListPage = original.GalleryImageVersionListPage
 type GalleryImageVersionProperties = original.GalleryImageVersionProperties
 type GalleryImageVersionPublishingProfile = original.GalleryImageVersionPublishingProfile
 type GalleryImageVersionStorageProfile = original.GalleryImageVersionStorageProfile
+type GalleryImageVersionUpdate = original.GalleryImageVersionUpdate
 type GalleryImageVersionsClient = original.GalleryImageVersionsClient
 type GalleryImageVersionsCreateOrUpdateFuture = original.GalleryImageVersionsCreateOrUpdateFuture
 type GalleryImageVersionsDeleteFuture = original.GalleryImageVersionsDeleteFuture
+type GalleryImageVersionsUpdateFuture = original.GalleryImageVersionsUpdateFuture
 type GalleryImagesClient = original.GalleryImagesClient
 type GalleryImagesCreateOrUpdateFuture = original.GalleryImagesCreateOrUpdateFuture
 type GalleryImagesDeleteFuture = original.GalleryImagesDeleteFuture
+type GalleryImagesUpdateFuture = original.GalleryImagesUpdateFuture
 type GalleryList = original.GalleryList
 type GalleryListIterator = original.GalleryListIterator
 type GalleryListPage = original.GalleryListPage
 type GalleryOSDiskImage = original.GalleryOSDiskImage
 type GalleryProperties = original.GalleryProperties
+type GalleryUpdate = original.GalleryUpdate
 type GrantAccessData = original.GrantAccessData
 type HardwareProfile = original.HardwareProfile
 type Image = original.Image
 type ImageDataDisk = original.ImageDataDisk
+type ImageDisk = original.ImageDisk
 type ImageDiskReference = original.ImageDiskReference
 type ImageListResult = original.ImageListResult
 type ImageListResultIterator = original.ImageListResultIterator
@@ -895,6 +935,7 @@ type SourceVault = original.SourceVault
 type StorageProfile = original.StorageProfile
 type SubResource = original.SubResource
 type SubResourceReadOnly = original.SubResourceReadOnly
+type SubResourceWithColocationStatus = original.SubResourceWithColocationStatus
 type TargetRegion = original.TargetRegion
 type TerminateNotificationProfile = original.TerminateNotificationProfile
 type ThrottledRequestsInput = original.ThrottledRequestsInput
@@ -951,9 +992,11 @@ type VirtualMachineScaleSetExtensionListResultIterator = original.VirtualMachine
 type VirtualMachineScaleSetExtensionListResultPage = original.VirtualMachineScaleSetExtensionListResultPage
 type VirtualMachineScaleSetExtensionProfile = original.VirtualMachineScaleSetExtensionProfile
 type VirtualMachineScaleSetExtensionProperties = original.VirtualMachineScaleSetExtensionProperties
+type VirtualMachineScaleSetExtensionUpdate = original.VirtualMachineScaleSetExtensionUpdate
 type VirtualMachineScaleSetExtensionsClient = original.VirtualMachineScaleSetExtensionsClient
 type VirtualMachineScaleSetExtensionsCreateOrUpdateFuture = original.VirtualMachineScaleSetExtensionsCreateOrUpdateFuture
 type VirtualMachineScaleSetExtensionsDeleteFuture = original.VirtualMachineScaleSetExtensionsDeleteFuture
+type VirtualMachineScaleSetExtensionsUpdateFuture = original.VirtualMachineScaleSetExtensionsUpdateFuture
 type VirtualMachineScaleSetIPConfiguration = original.VirtualMachineScaleSetIPConfiguration
 type VirtualMachineScaleSetIPConfigurationProperties = original.VirtualMachineScaleSetIPConfigurationProperties
 type VirtualMachineScaleSetIPTag = original.VirtualMachineScaleSetIPTag
@@ -1006,7 +1049,11 @@ type VirtualMachineScaleSetUpdatePublicIPAddressConfigurationProperties = origin
 type VirtualMachineScaleSetUpdateStorageProfile = original.VirtualMachineScaleSetUpdateStorageProfile
 type VirtualMachineScaleSetUpdateVMProfile = original.VirtualMachineScaleSetUpdateVMProfile
 type VirtualMachineScaleSetVM = original.VirtualMachineScaleSetVM
+type VirtualMachineScaleSetVMExtensionsClient = original.VirtualMachineScaleSetVMExtensionsClient
+type VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture = original.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture
+type VirtualMachineScaleSetVMExtensionsDeleteFuture = original.VirtualMachineScaleSetVMExtensionsDeleteFuture
 type VirtualMachineScaleSetVMExtensionsSummary = original.VirtualMachineScaleSetVMExtensionsSummary
+type VirtualMachineScaleSetVMExtensionsUpdateFuture = original.VirtualMachineScaleSetVMExtensionsUpdateFuture
 type VirtualMachineScaleSetVMInstanceIDs = original.VirtualMachineScaleSetVMInstanceIDs
 type VirtualMachineScaleSetVMInstanceRequiredIDs = original.VirtualMachineScaleSetVMInstanceRequiredIDs
 type VirtualMachineScaleSetVMInstanceView = original.VirtualMachineScaleSetVMInstanceView
@@ -1057,6 +1104,7 @@ type VirtualMachinesDeallocateFuture = original.VirtualMachinesDeallocateFuture
 type VirtualMachinesDeleteFuture = original.VirtualMachinesDeleteFuture
 type VirtualMachinesPerformMaintenanceFuture = original.VirtualMachinesPerformMaintenanceFuture
 type VirtualMachinesPowerOffFuture = original.VirtualMachinesPowerOffFuture
+type VirtualMachinesReapplyFuture = original.VirtualMachinesReapplyFuture
 type VirtualMachinesRedeployFuture = original.VirtualMachinesRedeployFuture
 type VirtualMachinesReimageFuture = original.VirtualMachinesReimageFuture
 type VirtualMachinesRestartFuture = original.VirtualMachinesRestartFuture
@@ -1117,6 +1165,18 @@ func NewDedicatedHostsClient(subscriptionID string) DedicatedHostsClient {
 }
 func NewDedicatedHostsClientWithBaseURI(baseURI string, subscriptionID string) DedicatedHostsClient {
 	return original.NewDedicatedHostsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDiskEncryptionSetListIterator(page DiskEncryptionSetListPage) DiskEncryptionSetListIterator {
+	return original.NewDiskEncryptionSetListIterator(page)
+}
+func NewDiskEncryptionSetListPage(getNextPage func(context.Context, DiskEncryptionSetList) (DiskEncryptionSetList, error)) DiskEncryptionSetListPage {
+	return original.NewDiskEncryptionSetListPage(getNextPage)
+}
+func NewDiskEncryptionSetsClient(subscriptionID string) DiskEncryptionSetsClient {
+	return original.NewDiskEncryptionSetsClient(subscriptionID)
+}
+func NewDiskEncryptionSetsClientWithBaseURI(baseURI string, subscriptionID string) DiskEncryptionSetsClient {
+	return original.NewDiskEncryptionSetsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDiskListIterator(page DiskListPage) DiskListIterator {
 	return original.NewDiskListIterator(page)
@@ -1340,6 +1400,12 @@ func NewVirtualMachineScaleSetRollingUpgradesClient(subscriptionID string) Virtu
 func NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetRollingUpgradesClient {
 	return original.NewVirtualMachineScaleSetRollingUpgradesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewVirtualMachineScaleSetVMExtensionsClient(subscriptionID string) VirtualMachineScaleSetVMExtensionsClient {
+	return original.NewVirtualMachineScaleSetVMExtensionsClient(subscriptionID)
+}
+func NewVirtualMachineScaleSetVMExtensionsClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachineScaleSetVMExtensionsClient {
+	return original.NewVirtualMachineScaleSetVMExtensionsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewVirtualMachineScaleSetVMListResultIterator(page VirtualMachineScaleSetVMListResultPage) VirtualMachineScaleSetVMListResultIterator {
 	return original.NewVirtualMachineScaleSetVMListResultIterator(page)
 }
@@ -1406,11 +1472,17 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	return original.PossibleDiskCreateOptionValues()
 }
+func PossibleDiskEncryptionSetIdentityTypeValues() []DiskEncryptionSetIdentityType {
+	return original.PossibleDiskEncryptionSetIdentityTypeValues()
+}
 func PossibleDiskStateValues() []DiskState {
 	return original.PossibleDiskStateValues()
 }
 func PossibleDiskStorageAccountTypesValues() []DiskStorageAccountTypes {
 	return original.PossibleDiskStorageAccountTypesValues()
+}
+func PossibleEncryptionTypeValues() []EncryptionType {
+	return original.PossibleEncryptionTypeValues()
 }
 func PossibleHostCachingValues() []HostCaching {
 	return original.PossibleHostCachingValues()
