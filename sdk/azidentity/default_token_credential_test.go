@@ -5,10 +5,16 @@ package azidentity
 
 import (
 	"errors"
+	"os"
 	"testing"
 )
 
 func TestDefaultTokenCredential_ExcludeEnvCredential(t *testing.T) {
+	err := resetEnvironmentVarsForTest()
+	if err != nil {
+		t.Fatalf("Unable to set environment variables")
+	}
+	_ = os.Setenv("MSI_ENDPOINT", "http://localhost:3000")
 	cred, err := NewDefaultTokenCredential(&DefaultTokenCredentialOptions{ExcludeEnvironmentCredential: true})
 	if err != nil {
 		t.Fatalf("Did not expect to receive an error in creating the credential")
@@ -17,6 +23,7 @@ func TestDefaultTokenCredential_ExcludeEnvCredential(t *testing.T) {
 	if len(cred.sources) != 1 {
 		t.Fatalf("Length of ChainedTokenCredential sources for DefaultTokenCredential. Expected: 1, Received: %d", len(cred.sources))
 	}
+	_ = os.Setenv("MSI_ENDPOINT", "")
 
 }
 
@@ -52,7 +59,11 @@ func TestDefaultTokenCredential_ExcludeAllCredentials(t *testing.T) {
 }
 
 func TestDefaultTokenCredential_NilOptions(t *testing.T) {
-	err := initEnvironmentVarsForTest()
+	err := resetEnvironmentVarsForTest()
+	if err != nil {
+		t.Fatalf("Unable to set environment variables")
+	}
+	err = initEnvironmentVarsForTest()
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}
@@ -60,7 +71,7 @@ func TestDefaultTokenCredential_NilOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Did not expect to receive an error in creating the credential")
 	}
-	if len(cred.sources) != 2 {
-		t.Fatalf("Length of ChainedTokenCredential sources for DefaultTokenCredential. Expected: 2, Received: %d", len(cred.sources))
+	if len(cred.sources) != 1 {
+		t.Fatalf("Length of ChainedTokenCredential sources for DefaultTokenCredential. Expected: 1, Received: %d", len(cred.sources))
 	}
 }
